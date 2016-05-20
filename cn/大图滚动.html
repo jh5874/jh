@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="../css/reset.css">
+	<style type="text/css">
+		.wrap {
+			position: relative;
+			width: 500px;
+			height: 400px;
+			margin: 0 auto;
+		}
+		.outer {
+			overflow: hidden;
+			width: 500px;
+			height: 300px;
+		}
+		.inner {
+			width: 2500px;
+			height: 400px;
+		}
+		.inner img {
+			float: left;
+			width: 500px;
+			height: 300px;
+		}
+		.tit {
+			position: absolute;
+			left: 0;
+			bottom: 110px;
+			width: 500px;
+			height: 50px;
+		}
+		.tit p {
+			display: none;
+			width: 500px;
+			height: 50px;
+			background: #666;
+			text-indent: 1em;
+			line-height: 50px;
+			font-size: 28px;
+			color: #fff;
+			opacity: 0.8;
+			filter: alpha(opacity = 80);
+		}
+		.tit .titone {
+			display: block;
+		}
+		.nav {
+			overflow: hidden;
+			width: 480;
+			height: 80px;
+			padding: 10px 0 10px 10px;
+			background: #666;
+			line-height: 100px;
+		}
+		.nav img {
+			float: left;
+			width: 85px;
+			height: 78px;
+			margin-right: 10px;
+			border: 1px solid #fff;
+			opacity: 0.6;
+			filter: alpha(opacity = 60);
+			cursor: pointer;
+			-webkit-user-select: none;
+		}
+		.nav .navcon {
+			border: 1px solid #00f;
+			opacity: 1;
+		}
+		.btn {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 500px;
+			height: 300px;
+		}
+		.btn span {
+			display: none;
+			width: 50px;
+			height: 20px;
+			margin-top: 140px;
+			line-height: 20px;
+			font-size: 18px;
+			color: #fff;
+			cursor: pointer;
+			-webkit-user-select: none;
+		}
+		.btn .btnleft {
+			float: left;
+			text-align: center;
+		}
+		.btn .btnright {
+			float: right;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap" id="wrap">
+		<div class="outer" id="outer">
+			<div class="inner clearfix" id="inner">
+				<img src="../images/301.jpg" alt="" title="1" />
+				<img src="../images/302.jpg" alt="" title="2" />
+				<img src="../images/303.jpg" alt="" title="3" />
+				<img src="../images/304.jpg" alt="" title="4" />
+				<img src="../images/305.jpg" alt="" title="5" />	
+			</div>
+		</div>
+		<div class="nav clearfix" id="imgbtn">
+			<img class="navcon" src="../images/301.jpg" alt="" />
+			<img src="../images/302.jpg" alt="" />
+			<img src="../images/303.jpg" alt="" />
+			<img src="../images/304.jpg" alt="" />
+			<img src="../images/305.jpg" alt="" />
+		</div>
+		<div class="tit" id="tit">
+			<p class="titone">千纸</p>
+			<p>海星</p>
+			<p>心形</p>
+			<p>星瓶</p>
+			<p>杏花</p>
+		</div>
+		<div class="btn clearfix" id="btn">
+			<span class="btnleft"><</span>
+			<span class="btnright">></span>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var outerBox = document.getElementById("outer");
+		var innerBox = document.getElementById("inner");
+		var btns = document.getElementById("btn");
+		var aroBtns = btns.getElementsByTagName('span');
+		var imgBtns = document.getElementById("imgbtn").getElementsByTagName('img');
+		var tit = document.getElementById("tit");
+		var titPs = tit.getElementsByTagName("p");
+		var timer = null;
+		var indexTimer = null;
+		var index = 0;
+
+		function startMove(end) {
+			// 获取起点值
+			var start = outer.scrollLeft;
+			var speed = 0;
+			if (timer) {
+				clearInterval(timer);
+			}
+			timer = setInterval(move, 20);
+			show();
+			function move() {
+				// 获取起点到终点的距离然后求步长
+				speed = (end - start) / 10;
+				// 代码优化
+				speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+				var distance = Math.abs(end - start);
+				start += speed;
+				// 贴合
+				if (distance <= 5) {
+					start = end;
+					clearInterval(timer);
+					timer = null;
+				}
+				outer.scrollLeft = start;
+			}
+		}
+		// tab切换
+		function show() {
+			for (var j = 0; j < imgBtns.length; j++) {
+				imgBtns[j].className = "";
+				titPs[j].className = "";
+			}
+			imgBtns[index].className = "navcon";
+			titPs[index].className = "titone";	
+		}
+		// 利用索引值进行多次滚动
+		function indexScroll() {
+			index++;
+			if (index == 5) {
+				index = 0;
+			}
+			startMove(index * 500);
+		}
+		indexTimer = setInterval(indexScroll, 3000);
+		// 左键按钮功能
+		aroBtns[0].onclick = function() {
+			if (timer) {
+				return;
+			}
+			clearInterval(indexTimer);
+			index--;
+			if (index == -1) {
+				index = 4;
+			}
+			startMove(index * 500);
+			indexTimer = setInterval(indexScroll, 3000);
+		}
+		// 右键按钮功能
+		aroBtns[1].onclick = function() {
+			if (timer) {
+				return;
+			}
+			clearInterval(indexTimer);
+			indexScroll();
+			indexTimer = setInterval(indexScroll, 3000);
+		}
+		// 添加图片序号功能
+		for (var i = 0; i < imgBtns.length; i++) {
+			imgBtns[i].index = i;
+			imgBtns[i].onclick = function() {
+				clearInterval(indexTimer);
+				index = this.index;
+				startMove(index * 500);
+				indexTimer = setInterval(indexScroll, 3000);
+			}
+		}
+		// 鼠标悬浮，出现左右键
+		btns.onmouseover = function() {
+			aroBtns[0].style.display = "block";
+			aroBtns[1].style.display = "block";
+		}
+		// 鼠标移开，左右键消失
+		btns.onmouseout = function() {
+			aroBtns[0].style.display = "none";
+			aroBtns[1].style.display = "none";
+		}
+	</script>
+</body>
+</html>

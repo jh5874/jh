@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tab切换练习一</title>
+	<link rel="stylesheet" type="text/css" href="../css/reset.css">
+	<style type="text/css">
+		.wrap {
+			padding-bottom: 20px;
+		} 
+		.main {
+			width: 100%;
+			min-width: 1000px;
+		}
+		.main img {
+			display: none;
+			min-width: 1000px;
+			height: 400px;
+		}
+		.main .main-con img {
+			display: block;
+		}
+		.nav {
+			overflow: hidden;
+			width: 100%;
+			min-width: 800px;
+			padding: 0 100px;
+			background: #6899e3;
+		}
+		.nav span {
+			float: left;
+			width: 16%;
+			height: 45px;
+			line-height: 45px;
+			text-align: center;
+			font-size: 16px;
+			color: #fff;
+			cursor: pointer;
+		}
+		.nav .nav-con {
+			display: block;
+			background: #4180dd;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="main" id="mainid">
+			<div class="main-con" id="main-con1"><img src="../images/img1.png" alt=""></div>
+			<div id="main-con2"><img src="../images/img2.png" alt=""></div>
+			<div id="main-con3"><img src="../images/img3.png" alt=""></div>
+			<div id="main-con4"><img src="../images/img4.png" alt=""></div>
+			<div id="main-con5"><img src="../images/img5.png" alt=""></div>
+		</div>
+		<div class="nav clearfix" id="navid">
+			<span class="nav-con" id="nav-con1">服务器安全狗1</span>
+			<span id="nav-con2">服务器安全狗2</span>
+			<span id="nav-con3">服务器安全狗3</span>
+			<span id="nav-con4">服务器安全狗4</span>
+			<span id="nav-con5">服务器安全狗5</span>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var mains = document.getElementById("mainid").getElementsByTagName("div");
+		var navs = document.getElementById("navid").getElementsByTagName("span");
+		for (var i = 0; i < navs.length; i++) {
+			navs[i].onclick = function() {
+				for (var j = 0; j < navs.length; j++) {
+				if (navs[j] == this) {
+					navs[j].className = "nav-con";
+					mains[j].className = "main-con";
+				} else {
+					navs[j].className = "";
+					mains[j].className = "";
+				}
+				}
+			}
+		}
+
+		// 自定义属性版tab切换
+		// for (var i = 0; i < navs.length; i++) {
+		// 	navs[i].index = i;
+		// 	navs[i].onclick = function() {
+		// 		for (var j = 0; j < navs.length; j++) {
+		// 			navs[j].className = "";
+		// 			mains[j].className = "";
+		// 		}
+		// 		navs[this.index].className = "nav-con";
+		// 		mains[this.index].className = "main-con";
+		// 	}
+		// }
+
+		// 闭包版tab切换
+		// for (var i = 0; i < navs.length; i++) {
+		// 	navs[i].onclick = function(num) {
+		// 		return function() {
+		// 			for (var j = 0; j < navs.length; j++) {
+		// 				navs[j].className = "";
+		// 				mains[j].className = "";
+		// 			}
+		// 			if (this == navs[num]) {
+		// 				navs[num].className = "nav-con";
+		// 				mains[num].className = "main-con";
+		// 			}
+		// 		}
+		// 	}(i);
+		// }
+	</script>
+</body>
+</html>
